@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           Image(
-            image: AssetImage('assets/text_logo_transparent_small.webp'),
+            image: AssetImage('assets/logo.webp'),
             fit: BoxFit.contain,
             height: 70,
           ),
@@ -35,7 +35,7 @@ class HomePage extends StatelessWidget {
                       height: 128,
                       width: 128,
                       child: Image(
-                        image: AssetImage('assets/general.webp'),
+                        image: AssetImage('assets/avatar.webp'),
                         fit: BoxFit.cover,
                         height: 128,
                         width: double.infinity,
