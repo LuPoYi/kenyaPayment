@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-import '../screens/HomePage.dart';
-import '../screens/ChatPage.dart';
-import '../screens/HistoryPage.dart';
+import '../Screens/HomePage.dart';
+import '../Screens/ChatPage.dart';
+import '../Screens/HistoryPage.dart';
+import '../Screens/ProfilePage.dart';
+import '../LoginPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class App extends StatefulWidget {
-  App({Key key}) : super(key: key);
-
   @override
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> {
-  int _pageIndex = 0;
+  int _currentIndex = 0;
 
   final tabs = [
     HomePage(),
     HistoryPage(),
     ChatPage(),
+    ProfilePage(),
   ];
 
   @override
@@ -26,7 +29,7 @@ class _AppState extends State<App> {
         borderRadius: BorderRadius.circular(10),
         child: Scaffold(
           backgroundColor: Color(0xFFf2f2fa),
-          body: tabs[_pageIndex],
+          body: tabs[_currentIndex],
           bottomNavigationBar: _buildBottomNavigationBar(context),
         ),
       ),
@@ -46,7 +49,7 @@ class _AppState extends State<App> {
               showSelectedLabels: false,
               type: BottomNavigationBarType.fixed,
               showUnselectedLabels: false,
-              currentIndex: 0,
+              currentIndex: _currentIndex,
               unselectedItemColor: Colors.grey,
               selectedItemColor: Color(0xFF5579DB),
               items: <BottomNavigationBarItem>[
@@ -62,12 +65,18 @@ class _AppState extends State<App> {
                   icon: Icon(Icons.people),
                   label: 'Chat',
                 ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
               ],
-              onTap: (index) {
-                setState(() {
-                  _pageIndex = index;
-                });
-              },
+              onTap: onTabTapped,
             )));
+  }
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../LoginPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         children: [
           Image(
-            image: AssetImage('assets/logo.webp'),
+            image: AssetImage('assets/google_logo.png'),
             fit: BoxFit.contain,
             height: 70,
           ),
@@ -31,15 +32,12 @@ class HomePage extends StatelessWidget {
                   alignment: Alignment.centerRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 32),
-                    child: Container(
-                      height: 128,
-                      width: 128,
-                      child: Image(
-                        image: AssetImage('assets/avatar.webp'),
-                        fit: BoxFit.cover,
-                        height: 128,
-                        width: double.infinity,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        photoURL,
                       ),
+                      radius: 60,
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
                 ),
@@ -49,15 +47,12 @@ class HomePage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Bob Lu",
+                      name,
                       style: Theme.of(context).textTheme.headline6,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "肥宅",
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
+                    Text(
+                      email,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   ],
                 ),

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "322003199307",
+    "firebase_url": "https://kenyapayment-5a8b2.firebaseio.com",
+    "project_id": "kenyapayment-5a8b2",
+    "storage_bucket": "kenyapayment-5a8b2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322003199307:android:762bf25a0975767a9974ce",
+        "android_client_info": {
+          "package_name": "bob.kenyaPayment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322003199307-av2obvlk6kqh958k1uem5dps4a1ca51a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmLzzJwGzPWmJHw7pZFg7fn6Ek1qBEAYg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322003199307-av2obvlk6kqh958k1uem5dps4a1ca51a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,24 +1,65 @@
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-import 'App/App.dart';
 import 'LoginPage.dart';
+import 'App/App.dart';
+import 'Screens/HomePage.dart';
 
-void main() => runApp(MyApp());
+var routes = <String, WidgetBuilder>{
+  "/auth": (BuildContext context) => LoginPage(),
+  "/home": (BuildContext context) => HomePage(),
+};
 
-class MyApp extends StatelessWidget {
-  final routes = <String, WidgetBuilder>{
-    'App': (context) => App(),
-    'Login Page': (context) => LoginPage(),
-  };
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Main',
+    routes: routes,
+    home: MyApp(),
+  ));
+}
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    navigateUser();
+  }
+
+  navigateUser() {
+    User currentUser = FirebaseAuth.instance.currentUser;
+    print("currentUser: $currentUser");
+    if (currentUser == null) {
+      Timer(Duration(seconds: 2),
+          () => Navigator.pushReplacementNamed(context, "/auth"));
+    } else {
+      Timer(
+        Duration(seconds: 2),
+        () => Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => App()),
+            (Route<dynamic> route) => false),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Go',
-        theme: new ThemeData(
-          primaryColor: Color.fromRGBO(58, 66, 222, 1.0),
-        ),
-        home: LoginPage(),
-        routes: routes);
+        home: Scaffold(
+          body: Center(
+            child: Text("Design Your splash screen"),
+          ),
+        ));
   }
 }
