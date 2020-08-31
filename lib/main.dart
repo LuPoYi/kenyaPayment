@@ -20,6 +20,13 @@ void main() async {
     debugShowCheckedModeBanner: false,
     title: 'Main',
     routes: routes,
+    theme: ThemeData(
+      primaryColor: Color(0xff145C9E),
+      scaffoldBackgroundColor: Color(0xff1F1F1F),
+      accentColor: Color(0xff007EF4),
+      fontFamily: "OverpassRegular",
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+    ),
     home: MyApp(),
   ));
 }

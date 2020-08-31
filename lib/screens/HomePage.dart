@@ -6,10 +6,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("name $name");
     return Scaffold(
       body: SafeArea(
           child: Column(children: [
-        _buildHeader(context),
+        name == null ? Container() : (context),
         _buildMainBody(context),
       ])),
     );
