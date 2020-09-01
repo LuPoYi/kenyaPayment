@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'App/App.dart';
+import '../app.dart';
 
 String name;
 String email;
 String photoURL;
+bool isLogin = false;
+
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -71,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
     name = firebaseUser.displayName;
     email = firebaseUser.email;
     photoURL = firebaseUser.photoURL;
+    isLogin = true;
 
     final User currentUser = firebaseAuth.currentUser;
     assert(firebaseUser.uid == currentUser.uid);

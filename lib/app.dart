@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../Screens/HomePage.dart';
-import '../Screens/ChatPage.dart';
-import '../Screens/HistoryPage.dart';
-import '../Screens/ProfilePage.dart';
-import '../LoginPage.dart';
+import 'pages/home.dart';
+import 'pages/chat.dart';
+import 'pages/history.dart';
+import 'pages/profile.dart';
+import 'pages/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -21,6 +21,11 @@ class _AppState extends State<App> {
     ChatPage(),
     ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

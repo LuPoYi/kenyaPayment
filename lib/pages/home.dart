@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import '../LoginPage.dart';
+import 'login.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print("name $name");
     return Scaffold(
       body: SafeArea(
           child: Column(children: [

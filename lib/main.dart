@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
-import 'LoginPage.dart';
-import 'App/App.dart';
-import 'Screens/HomePage.dart';
+import 'pages/login.dart';
+import 'app.dart';
+import 'pages/home.dart';
 
 var routes = <String, WidgetBuilder>{
   "/auth": (BuildContext context) => LoginPage(),
@@ -45,13 +45,13 @@ class _MyAppState extends State<MyApp> {
 
   navigateUser() {
     User currentUser = FirebaseAuth.instance.currentUser;
-    print("currentUser: $currentUser");
+
     if (currentUser == null) {
-      Timer(Duration(seconds: 2),
+      Timer(Duration(seconds: 1),
           () => Navigator.pushReplacementNamed(context, "/auth"));
     } else {
       Timer(
-        Duration(seconds: 2),
+        Duration(seconds: 1),
         () => Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => App()),
             (Route<dynamic> route) => false),

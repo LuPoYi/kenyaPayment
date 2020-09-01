@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../LoginPage.dart';
+import 'login.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({Key key}) : super(key: key);
@@ -21,7 +21,6 @@ class _ChatPageState extends State<ChatPage> {
           .collection("messages")
           .snapshots(),
       builder: (context, snapshot) {
-        print("snapshot.data.docs1 $snapshot");
         return snapshot.hasData
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
