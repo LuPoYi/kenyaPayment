@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'login.dart';
@@ -10,7 +11,27 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final GoogleSignIn googleSignIn = GoogleSignIn();
+  bool isLogin = false;
+  String name = "";
+  String email = "";
+  String photoURL = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+  }
+
+  _getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      isLogin = prefs.getBool("isLogin");
+      name = prefs.getString("name");
+      email = prefs.getString("email");
+      photoURL = prefs.getString("photoURL");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

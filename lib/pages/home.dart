@@ -1,15 +1,41 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isLogin = false;
+  String name = "";
+  String email = "";
+  String photoURL = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserInfo();
+  }
+
+  _getUserInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      name = prefs.getString("name");
+      email = prefs.getString("email");
+      photoURL = prefs.getString("photoURL");
+      isLogin = name != "";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
           child: Column(children: [
-        name == null ? Container() : (context),
+        name == "" ? Text("Null") : Text("Hi"),
+        _buildHeader(context),
         _buildMainBody(context),
       ])),
     );
@@ -70,7 +96,7 @@ class HomePage extends StatelessWidget {
     return ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      children: List.generate(10, (idx) {
+      children: List.generate(5, (idx) {
         return Card(
             child: Container(
                 height: 30, width: 30, color: Colors.red, child: Text('$idx')));

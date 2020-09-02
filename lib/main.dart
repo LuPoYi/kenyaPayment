@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'pages/login.dart';
 import 'app.dart';
@@ -43,19 +42,20 @@ class _MyAppState extends State<MyApp> {
     navigateUser();
   }
 
-  navigateUser() {
-    User currentUser = FirebaseAuth.instance.currentUser;
+  navigateUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLogin = prefs.getString("name") != "";
 
-    if (currentUser == null) {
-      Timer(Duration(seconds: 1),
-          () => Navigator.pushReplacementNamed(context, "/auth"));
-    } else {
+    if (isLogin) {
       Timer(
         Duration(seconds: 1),
         () => Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => App()),
             (Route<dynamic> route) => false),
       );
+    } else {
+      Timer(Duration(seconds: 1),
+          () => Navigator.pushReplacementNamed(context, "/auth"));
     }
   }
 

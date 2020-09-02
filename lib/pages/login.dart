@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../app.dart';
-
-String name;
-String email;
-String photoURL;
-bool isLogin = false;
 
 final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -70,18 +66,15 @@ class _LoginPageState extends State<LoginPage> {
     final User firebaseUser =
         (await firebaseAuth.signInWithCredential(credential)).user;
 
-    name = firebaseUser.displayName;
-    email = firebaseUser.email;
-    photoURL = firebaseUser.photoURL;
-    isLogin = true;
-
     final User currentUser = firebaseAuth.currentUser;
     assert(firebaseUser.uid == currentUser.uid);
-    print("aaa");
-    print(name);
-    print(email);
-    print(photoURL);
-    print("bbb");
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isLogin", true);
+    await prefs.setString("name", firebaseUser.displayName);
+    await prefs.setString("email", firebaseUser.email);
+    await prefs.setString("photoURL", firebaseUser.photoURL);
+
     return firebaseUser;
   }
 }
