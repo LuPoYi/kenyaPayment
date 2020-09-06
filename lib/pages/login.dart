@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../app.dart';
@@ -20,42 +19,68 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.pink,
-          title: Text("Hi3"),
-        ),
-        body: Center(
-            child: Column(
-          children: [
-            Text("1displayName Out: ${user?.displayName}"),
-            FlatButton(
-                child: Padding(
-                    padding: EdgeInsets.all(10.0),
-                    child: Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white, fontSize: 24),
-                    )),
-                onPressed: () {
-                  _signInWithGoogle().whenComplete(() {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return App();
-                        },
-                      ),
-                    );
-                  }).catchError((onError) {
-                    Navigator.pushReplacementNamed(context, "/auth");
-                  });
-                },
-                color: Colors.black)
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        FlutterLogo(size: 150),
+        SizedBox(height: 50),
+        Text("克彥付錢",
+            style: TextStyle(
+              fontSize: 30,
+              color: Colors.white54,
+              fontWeight: FontWeight.w400,
+              decoration: TextDecoration.none,
+            )),
+        SizedBox(height: 50),
+        _signInButton()
+      ],
+    );
+  }
+
+  Widget _signInButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image(image: AssetImage("assets/google_logo.png"), height: 35.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
           ],
-        )));
+        ),
+      ),
+      onPressed: () {
+        _signInWithGoogle().whenComplete(() {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return App();
+              },
+            ),
+          );
+        }).catchError((onError) {
+          Navigator.pushReplacementNamed(context, "/auth");
+        });
+      },
+    );
   }
 
   Future<User> _signInWithGoogle() async {
-    print("_signInWithGoogle");
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
