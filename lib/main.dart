@@ -44,7 +44,8 @@ class _MyAppState extends State<MyApp> {
 
   navigateUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLogin = prefs.getString("name") != "";
+    bool isLogin =
+        prefs.getString("name") != null && prefs.getString("name") != "";
 
     if (isLogin) {
       Timer(

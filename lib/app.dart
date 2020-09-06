@@ -3,9 +3,6 @@ import 'pages/home.dart';
 import 'pages/chat.dart';
 import 'pages/history.dart';
 import 'pages/profile.dart';
-import 'pages/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class App extends StatefulWidget {
   @override
@@ -60,22 +57,20 @@ class _AppState extends State<App> {
               unselectedItemColor: Colors.grey,
               selectedItemColor: Color(0xFF5579DB),
               items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(icon: Icon(Icons.home), title: Text('')
+                    //label: 'Home',
+                    ),
+                BottomNavigationBarItem(icon: Icon(Icons.list), title: Text('')
+                    //label: 'History',
+                    ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
+                    icon: Icon(Icons.people), title: Text('')
+                    //label: 'Chat',
+                    ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.list),
-                  label: 'History',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  label: 'Chat',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
+                    icon: Icon(Icons.person), title: Text('Profile')
+                    //label: 'Profile',
+                    ),
               ],
               onTap: onTabTapped,
             )));

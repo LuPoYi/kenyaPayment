@@ -41,6 +41,7 @@ class _ChatPageState extends State<ChatPage> {
           .collection('rooms')
           .doc("yJreT4x8Fr37dP6h55qq")
           .collection("messages")
+          .orderBy("timestamp", descending: true)
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.hasData
@@ -99,32 +100,47 @@ class _ChatPageState extends State<ChatPage> {
           top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin:
-            sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
-        decoration: BoxDecoration(
-            borderRadius: sendByMe
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23))
-                : BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
-            gradient: LinearGradient(
-              colors: sendByMe
-                  ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                  : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
-            )),
-        child: Text(message,
-            textAlign: TextAlign.start,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontFamily: 'OverpassRegular',
-                fontWeight: FontWeight.w300)),
-      ),
+          margin:
+              sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
+          padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+          decoration: BoxDecoration(
+              borderRadius: sendByMe
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomLeft: Radius.circular(23))
+                  : BorderRadius.only(
+                      topLeft: Radius.circular(23),
+                      topRight: Radius.circular(23),
+                      bottomRight: Radius.circular(23)),
+              gradient: LinearGradient(
+                colors: sendByMe
+                    ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
+                    : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
+              )),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              sendByMe
+                  ? Container()
+                  : Padding(
+                      padding: EdgeInsets.only(right: 4),
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          photoURL,
+                        ),
+                        radius: 15,
+                        backgroundColor: Colors.transparent,
+                      )),
+              Text(message,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontFamily: 'OverpassRegular',
+                      fontWeight: FontWeight.w300)),
+            ],
+          )),
     );
   }
 

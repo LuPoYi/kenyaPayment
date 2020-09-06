@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../common/widget.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -32,58 +33,25 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
           child: Column(children: [
-        name == "" ? Text("Null") : Text("Hi"),
         _buildHeader(context),
-        _buildMainBody(context),
+        _buildOverview(context),
+        _buildOrderList(context),
       ])),
     );
   }
 
   Widget _buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 32, right: 32, bottom: 16),
+      padding: EdgeInsets.only(left: 32, right: 32, bottom: 16),
       child: Column(
         children: [
           Image(
             image: AssetImage('assets/google_logo.png'),
             fit: BoxFit.contain,
-            height: 70,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 32),
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        photoURL,
-                      ),
-                      radius: 60,
-                      backgroundColor: Colors.transparent,
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    Text(
-                      email,
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            height: 30,
           ),
         ],
       ),
@@ -92,15 +60,43 @@ class _HomePageState extends State<HomePage> {
 
 // list all todo list
 // current status
-  Widget _buildMainBody(BuildContext context) {
-    return ListView(
+  Widget _buildOrderList(BuildContext context) {
+    return Expanded(
+        child: ListView(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: List.generate(5, (idx) {
-        return Card(
-            child: Container(
-                height: 30, width: 30, color: Colors.red, child: Text('$idx')));
+        return buildOrderCard(idx);
       }),
-    );
+    ));
+  }
+
+  Widget _buildOverview(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+        width: double.maxFinite,
+        height: 120,
+        child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            color: Colors.pink,
+            elevation: 10,
+            child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        photoURL,
+                      ),
+                      radius: 30,
+                      backgroundColor: Colors.transparent,
+                    ),
+                    Text("-100",
+                        style: TextStyle(fontSize: 24, color: Colors.white))
+                  ],
+                ))));
   }
 }
