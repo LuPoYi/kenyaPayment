@@ -54,7 +54,8 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Color(0xFF6f8ee4),
             ),
           ),
-        )
+        ),
+        Text("這邊可以放一些統計資料，i.e. 克彥總付款20000"),
       ],
     );
   }

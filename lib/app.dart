@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'pages/home.dart';
 import 'pages/chat.dart';
 import 'pages/history.dart';
@@ -109,12 +110,12 @@ class _AppState extends State<App> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(4.0),
                             child: TextFormField(
-                              decoration: const InputDecoration(
-                                icon: Icon(Icons.person),
-                                hintText: 'What do people call you?',
-                                labelText: 'Name *',
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.category),
+                                hintText: '餐廳/活動名稱',
+                                labelText: '名稱',
                               ),
                               onSaved: (String value) {
                                 // This optional block of code can be used to run
@@ -128,14 +129,52 @@ class _AppState extends State<App> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextFormField(),
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.attach_money),
+                                hintText: '全部付款金額',
+                                labelText: '總金額',
+                              ),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                WhitelistingTextInputFormatter.digitsOnly
+                              ],
+                            ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.category),
+                                labelText: '日期',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.category),
+                                labelText: '付錢',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.category),
+                                labelText: '平分',
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(4.0),
                             child: RaisedButton(
                               child: Text("Submit"),
                               onPressed: () {
+                                Navigator.of(context).pop();
                                 // if (_formKey.currentState.validate()) {
                                 //   _formKey.currentState.save();
                                 // }
