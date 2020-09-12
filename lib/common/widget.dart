@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import '../models/order.dart';
 
 Widget buildHeader(BuildContext context) {
   return Padding(
@@ -15,7 +17,7 @@ Widget buildHeader(BuildContext context) {
   );
 }
 
-Widget buildOrderCard(dynamic order) {
+Widget buildOrderCard(Order order) {
   return Container(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
       //height: 120,
@@ -35,19 +37,27 @@ Widget buildOrderCard(dynamic order) {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('印度咖理', style: TextStyle(color: Colors.white)),
-                Text('09/06', style: TextStyle(color: Colors.white))
+                Text("${order.title} - ${order.memo}",
+                    style: TextStyle(color: Colors.white)),
+                Text(DateFormat('MM/dd').format(order.date),
+                    style: TextStyle(color: Colors.white))
               ]),
           subtitle: Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Total: 2000', style: TextStyle(color: Colors.white)),
-                Text('Me: -2000', style: TextStyle(color: Colors.white))
+                Text('Total: ${order.total}',
+                    style: TextStyle(color: Colors.white)),
+                //Text('Me: -2000', style: TextStyle(color: Colors.white)),
+                Text(order.payers[0].name,
+                    style: TextStyle(color: Colors.white)),
+                Text(order.sharers[1].name,
+                    style: TextStyle(color: Colors.white))
               ]),
-          trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [Icon(Icons.person), Text("3")]),
+          trailing: Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.person),
+            Text(order.sharers.length.toString())
+          ]),
           onTap: () => {},
         ),
       ));

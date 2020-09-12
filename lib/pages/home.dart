@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../common/widget.dart';
+import '../common/variable.dart';
+import '../models/order.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   String name = "";
   String email = "";
   String photoURL = "";
+  List<Order> orders = new List();
 
   @override
   void initState() {
@@ -61,14 +65,28 @@ class _HomePageState extends State<HomePage> {
 // list all todo list
 // current status
   Widget _buildOrderList(BuildContext context) {
-    return Expanded(
-        child: ListView(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      children: List.generate(5, (idx) {
-        return buildOrderCard(idx);
-      }),
-    ));
+    print("Hi $ordersCollection");
+
+    return StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance.collection(ordersCollection).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (!snapshot.hasData) return LinearProgressIndicator();
+            print("aaa: ${snapshot.data.docs}");
+            List<Widget> orders = snapshot.data.docs.map((data) {
+              return buildOrderCard(Order.fromSnapshot(data));
+            }).toList();
+            return Expanded(
+                child: ListView(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              children: orders,
+            ));
+          } else {
+            return Container();
+          }
+        });
   }
 
   Widget _buildOverview(BuildContext context) {

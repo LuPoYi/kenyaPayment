@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../common/widget.dart';
+import '../models/order.dart';
 
 class HistoryPage extends StatefulWidget {
   @override
@@ -25,7 +26,8 @@ class _HistoryPageState extends State<HistoryPage> {
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
       children: List.generate(10, (idx) {
-        return buildOrderCard(idx);
+        // return buildOrderCard();
+        return Container();
       }),
     ));
   }

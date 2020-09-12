@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
+import '../common/variable.dart';
 
 class ChatPage extends StatefulWidget {
   ChatPage({Key key}) : super(key: key);
@@ -62,7 +63,7 @@ class _ChatPageState extends State<ChatPage> {
 
   getChats() async {
     return FirebaseFirestore.instance
-        .collection('rooms')
+        .collection(roomsCollection)
         .doc("yJreT4x8Fr37dP6h55qq")
         .collection("messages")
         .snapshots();
