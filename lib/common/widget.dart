@@ -39,7 +39,7 @@ Widget buildOrderCard(Order order) {
               children: [
                 Text("${order.title} - ${order.memo}",
                     style: TextStyle(color: Colors.white)),
-                Text(DateFormat('MM/dd').format(order.date),
+                Text(getDateString(order.date),
                     style: TextStyle(color: Colors.white))
               ]),
           subtitle: Row(
@@ -49,16 +49,24 @@ Widget buildOrderCard(Order order) {
                 Text('Total: ${order.total}',
                     style: TextStyle(color: Colors.white)),
                 //Text('Me: -2000', style: TextStyle(color: Colors.white)),
-                Text(order.payers[0].name,
-                    style: TextStyle(color: Colors.white)),
-                Text(order.sharers[1].name,
-                    style: TextStyle(color: Colors.white))
+                //Text(order.payers.length > 0 ? order.payers[0].name : "",
+                //    style: TextStyle(color: Colors.white)),
+                //Text(order.sharers.length > 0 ? order.sharers[0].name : "",
+                //    style: TextStyle(color: Colors.white))
               ]),
           trailing: Row(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.person),
-            Text(order.sharers.length.toString())
+            //Text(order.sharers.length.toString())
           ]),
           onTap: () => {},
         ),
       ));
+}
+
+String getDateString(DateTime date) {
+  try {
+    return DateFormat('MM/dd').format(date);
+  } catch (e) {
+    return "";
+  }
 }

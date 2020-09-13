@@ -65,8 +65,6 @@ class _HomePageState extends State<HomePage> {
 // list all todo list
 // current status
   Widget _buildOrderList(BuildContext context) {
-    print("Hi $ordersCollection");
-
     return StreamBuilder<QuerySnapshot>(
         stream:
             FirebaseFirestore.instance.collection(ordersCollection).snapshots(),

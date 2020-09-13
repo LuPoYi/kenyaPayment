@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
 import '../common/variable.dart';
 
 class ChatPage extends StatefulWidget {
@@ -39,10 +38,10 @@ class _ChatPageState extends State<ChatPage> {
   Widget chatMessages() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
-          .collection('rooms')
+          .collection(roomsCollection)
           .doc("yJreT4x8Fr37dP6h55qq")
           .collection("messages")
-          .orderBy("timestamp", descending: true)
+          .orderBy("timestamp", descending: false)
           .snapshots(),
       builder: (context, snapshot) {
         return snapshot.hasData
