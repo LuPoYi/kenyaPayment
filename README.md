@@ -24,4 +24,8 @@
 
 
 Reference:
-https://apps.apple.com/tw/app/spend-together/id1446549608
+
+[App - Spend Together](https://apps.apple.com/tw/app/spend-together/id1446549608)
+
+[quicktype - Instantly parse JSON in any language](https://app.quicktype.io/)
+
