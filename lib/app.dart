@@ -19,6 +19,7 @@ class _AppState extends State<App> {
   TextEditingController _datePickerController =
       TextEditingController(text: DateFormat('MM/dd').format(DateTime.now()));
   int _currentIndex = 0;
+  PageController _pageController;
 
   final tabs = [
     HomePage(),
@@ -30,6 +31,13 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: 0);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override
@@ -86,125 +94,149 @@ class _AppState extends State<App> {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return AlertDialog(
-                content: Stack(
-                  overflow: Overflow.visible,
-                  children: <Widget>[
-                    Positioned(
-                      right: -40.0,
-                      top: -40.0,
-                      child: InkResponse(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: CircleAvatar(
-                          child: Icon(Icons.close),
-                          backgroundColor: Colors.red,
-                        ),
-                      ),
-                    ),
-                    _addOrderFrom(context)
-                  ],
-                ),
-              );
+              return _buildAlertDialogForm(context);
             });
       },
     );
   }
 
-  Widget _addOrderFrom(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(2.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.category),
-                hintText: '餐廳/活動',
-                labelText: '餐廳/活動',
-              ),
-              onSaved: (String value) {},
-              validator: (String value) {
-                return value.contains('@') ? 'Do not use the @ char.' : null;
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(2.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.attach_money),
-                hintText: '總金額',
-                labelText: '總金額',
-              ),
-              keyboardType: TextInputType.number,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(4.0),
-            child: TextFormField(
-              //initialValue: DateFormat('MM/dd').format(selectedDate),
-              controller: _datePickerController,
-              onTap: () {
-                showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2020),
-                        lastDate: DateTime(2100))
-                    .then((date) {
-                  print("asb $date");
-                  setState(() {
-                    _datePickerController.text =
-                        DateFormat('MM/dd').format(date);
-                  });
-                });
-              },
+  Widget _buildAlertDialogForm(BuildContext context) {
+    return AlertDialog(
+        content: Container(
+            width: 400,
+            height: 400,
+            child: PageView(
+              controller: _pageController,
+              children: [
+                _firstFormPage(context),
+                _secondFormPage(context),
+                _thirdFormPage(context)
+              ],
+            )));
+  }
 
-              decoration: InputDecoration(
-                icon: Icon(Icons.category),
-                labelText: '日期',
+  Widget _firstFormPage(BuildContext context) {
+    return Container(
+        color: Colors.yellow,
+        child: Form(
+            key: GlobalKey<FormState>(),
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(2.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    hintText: '餐廳/活動',
+                    labelText: '餐廳/活動',
+                  ),
+                  onSaved: (String value) {},
+                  validator: (String value) {
+                    return value.contains('@')
+                        ? 'Do not use the @ char.'
+                        : null;
+                  },
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(4.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.category),
-                labelText: '誰付的',
+              Padding(
+                padding: EdgeInsets.all(2.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.attach_money),
+                    hintText: '總金額',
+                    labelText: '總金額',
+                  ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(4.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                icon: Icon(Icons.category),
-                labelText: 'For who?',
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: TextFormField(
+                  controller: _datePickerController,
+                  onTap: () {
+                    showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2020),
+                            lastDate: DateTime(2100))
+                        .then((date) {
+                      setState(() {
+                        _datePickerController.text =
+                            DateFormat('MM/dd').format(date);
+                      });
+                    });
+                  },
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    labelText: '日期',
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(4.0),
-            child: RaisedButton(
-              child: Text("Submit"),
-              onPressed: () {
-                addOrder();
-                Navigator.of(context).pop();
-                // if (_formKey.currentState.validate()) {
-                //   _formKey.currentState.save();
-                // }
-              },
-            ),
-          )
-        ],
-      ),
-    );
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: RaisedButton(
+                  child: Text("Next1"),
+                  onPressed: () {
+                    pcNextPage();
+                  },
+                ),
+              )
+            ])));
+  }
+
+  Widget _secondFormPage(BuildContext context) {
+    return Container(
+        color: Colors.blue,
+        child: Form(
+            key: GlobalKey<FormState>(),
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    labelText: '誰付的',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: RaisedButton(
+                  child: Text("Next"),
+                  onPressed: () {
+                    pcNextPage();
+                  },
+                ),
+              )
+            ])));
+  }
+
+  Widget _thirdFormPage(BuildContext context) {
+    return Container(
+        color: Colors.deepPurple,
+        child: Form(
+            key: GlobalKey<FormState>(),
+            child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    labelText: 'For who?',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: RaisedButton(
+                  child: Text("送出"),
+                  onPressed: () {
+                    //addOrder();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              )
+            ])));
   }
 
   void onTabTapped(int index) {
@@ -213,19 +245,43 @@ class _AppState extends State<App> {
     });
   }
 
-  _selectDate(BuildContext context) {}
-
-  addOrder() {
-    print("a");
-    String title = "abc";
-    String memo = "memo";
-    Order order = Order(title, memo: memo);
-
-    FirebaseFirestore.instance
-        .collection(ordersCollection)
-        .add(order.toJson())
-        .catchError((e) {
-      print(e.toString());
-    });
+  void pcNextPage() {
+    _pageController.nextPage(
+        duration: Duration(milliseconds: 300), curve: Curves.ease);
   }
+
+  // addOrder() {
+  //   String title = "abc";
+  //   String memo = "memo";
+  //   Order order = Order(title, memo: memo);
+
+  //   FirebaseFirestore.instance
+  //       .collection(ordersCollection)
+  //       .add(order.toJson())
+  //       .catchError((e) {
+  //     print(e.toString());
+  //   });
+  // }
+
+  // Widget _originFormPage(BuildContext context) {
+  //   return Stack(
+  //     overflow: Overflow.visible,
+  //     children: <Widget>[
+  //       Positioned(
+  //         right: -40.0,
+  //         top: -40.0,
+  //         child: InkResponse(
+  //           onTap: () {
+  //             Navigator.of(context).pop();
+  //           },
+  //           child: CircleAvatar(
+  //             child: Icon(Icons.close),
+  //             backgroundColor: Colors.red,
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
 }
