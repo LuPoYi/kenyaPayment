@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kenyaPayment/pages/detail.dart';
 import '../models/order.dart';
+import '../pages/detail.dart';
 
 Widget buildHeader(BuildContext context) {
   return Padding(
@@ -17,7 +19,7 @@ Widget buildHeader(BuildContext context) {
   );
 }
 
-Widget buildOrderCard(Order order) {
+Widget buildOrderCard(BuildContext context, Order order) {
   return Container(
       padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
       //height: 120,
@@ -58,7 +60,17 @@ Widget buildOrderCard(Order order) {
             Icon(Icons.person),
             //Text(order.sharers.length.toString())
           ]),
-          onTap: () => {},
+          onTap: () => {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      content: Container(
+                          width: 400,
+                          height: 400,
+                          child: Detail(order: order)));
+                })
+          },
         ),
       ));
 }

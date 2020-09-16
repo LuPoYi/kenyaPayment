@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:kenyaPayment/common/variable.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kenyaPayment/models/order.dart';
 import 'pages/home.dart';
 import 'pages/chat.dart';
 import 'pages/history.dart';
 import 'pages/profile.dart';
-import 'models/order.dart';
 
 class App extends StatefulWidget {
   @override
@@ -15,6 +15,12 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  TextEditingController _titleController = new TextEditingController();
+  TextEditingController _totalController = new TextEditingController();
+  TextEditingController _kenyaController = new TextEditingController();
+  TextEditingController _bobController = new TextEditingController();
+  TextEditingController _shenController = new TextEditingController();
+
   DateTime selectedDate = DateTime.now();
   TextEditingController _datePickerController =
       TextEditingController(text: DateFormat('MM/dd').format(DateTime.now()));
@@ -124,6 +130,7 @@ class _AppState extends State<App> {
               Padding(
                 padding: EdgeInsets.all(2.0),
                 child: TextFormField(
+                  controller: _titleController,
                   decoration: InputDecoration(
                     icon: Icon(Icons.category),
                     hintText: '餐廳/活動',
@@ -140,6 +147,7 @@ class _AppState extends State<App> {
               Padding(
                 padding: EdgeInsets.all(2.0),
                 child: TextFormField(
+                  controller: _totalController,
                   decoration: InputDecoration(
                     icon: Icon(Icons.attach_money),
                     hintText: '總金額',
@@ -193,6 +201,7 @@ class _AppState extends State<App> {
               Padding(
                 padding: EdgeInsets.all(4.0),
                 child: TextFormField(
+                  controller: _kenyaController,
                   decoration: InputDecoration(
                     icon: Icon(Icons.category),
                     labelText: '誰付的',
@@ -220,9 +229,20 @@ class _AppState extends State<App> {
               Padding(
                 padding: EdgeInsets.all(4.0),
                 child: TextFormField(
+                  controller: _bobController,
                   decoration: InputDecoration(
                     icon: Icon(Icons.category),
-                    labelText: 'For who?',
+                    labelText: 'Bob',
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(4.0),
+                child: TextFormField(
+                  controller: _shenController,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    labelText: 'Shen',
                   ),
                 ),
               ),
@@ -231,7 +251,9 @@ class _AppState extends State<App> {
                 child: RaisedButton(
                   child: Text("送出"),
                   onPressed: () {
-                    //addOrder();
+                    //();
+
+                    submitOrder();
                     Navigator.of(context).pop();
                   },
                 ),
@@ -250,18 +272,40 @@ class _AppState extends State<App> {
         duration: Duration(milliseconds: 300), curve: Curves.ease);
   }
 
-  // addOrder() {
-  //   String title = "abc";
-  //   String memo = "memo";
-  //   Order order = Order(title, memo: memo);
+  submitOrder() {
+    //String title = "abc";
+    //String memo = "memo";
+    List<Payer> payers = List<Payer>();
+    payers.add(Payer(name: "Kenya", price: int.parse(_kenyaController.text)));
 
-  //   FirebaseFirestore.instance
-  //       .collection(ordersCollection)
-  //       .add(order.toJson())
-  //       .catchError((e) {
-  //     print(e.toString());
-  //   });
-  // }
+    List<Sharer> sharers = List<Sharer>();
+    sharers.add(Sharer(name: "Bob", price: int.parse(_bobController.text)));
+    sharers.add(Sharer(name: "Shen", price: int.parse(_shenController.text)));
+
+    Order order = Order(
+        isFinish: false,
+        memo: "",
+        title: _titleController.text,
+        total: int.parse(_totalController.text),
+        payers: payers,
+        sharers: sharers,
+        date: selectedDate);
+
+    FirebaseFirestore.instance
+        .collection(ordersCollection)
+        .add(order.toJson())
+        .catchError((e) {
+      print(e.toString());
+    });
+
+    //  clear form
+    selectedDate = DateTime.now();
+    _titleController.text = "";
+    _totalController.text = "";
+    _kenyaController.text = "";
+    _bobController.text = "";
+    _shenController.text = "";
+  }
 
   // Widget _originFormPage(BuildContext context) {
   //   return Stack(
@@ -283,5 +327,4 @@ class _AppState extends State<App> {
   //     ],
   //   );
   // }
-
 }

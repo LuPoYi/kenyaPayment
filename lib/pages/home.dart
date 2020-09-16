@@ -71,9 +71,9 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (!snapshot.hasData) return LinearProgressIndicator();
-            print("aaa: ${snapshot.data.docs}");
+            //print("aaa: ${snapshot.data.docs}");
             List<Widget> orders = snapshot.data.docs.map((data) {
-              return buildOrderCard(Order.fromSnapshot(data));
+              return buildOrderCard(context, Order.fromSnapshot(data));
             }).toList();
             return Expanded(
                 child: ListView(

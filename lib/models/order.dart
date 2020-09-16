@@ -1,24 +1,32 @@
+// To parse this JSON data, do
+//
+//     final order = orderFromJson(jsonString);
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'payer.dart';
-import 'sharer.dart';
+import 'dart:convert';
+
+Order orderFromJson(String str) => Order.fromJson(json.decode(str));
+
+String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
-  String title;
-  String memo;
-  DateTime date;
-  int total;
-  bool isFinish;
-  List<Payer> payers = List<Payer>();
-  List<Sharer> sharers = List<Sharer>();
-  DocumentReference reference;
-  Order(this.title,
-      {this.memo,
+  Order(
+      {this.payers,
+      this.memo,
+      this.title,
+      this.isFinish,
       this.date,
       this.total,
-      this.isFinish,
-      this.payers,
       this.sharers,
       this.reference});
+
+  List<Payer> payers;
+  String memo;
+  String title;
+  bool isFinish = false;
+  DateTime date;
+  int total;
+  List<Sharer> sharers;
+  DocumentReference reference;
 
   factory Order.fromSnapshot(DocumentSnapshot snapshot) {
     Order newOrder = Order.fromJson(snapshot.data());
@@ -26,71 +34,75 @@ class Order {
     return newOrder;
   }
 
-  factory Order.fromJson(Map<String, dynamic> json) => _orderFromJson(json);
+  factory Order.fromJson(Map<String, dynamic> json) => Order(
+        payers: List<Payer>.from(json["payers"].map((x) => Payer.fromJson(x))),
+        memo: json["memo"],
+        title: json["title"],
+        isFinish: json["isFinish"],
+        //date: json["date"],
+        date:
+            json['date'] == null ? null : (json['date'] as Timestamp).toDate(),
+        total: json["total"],
+        sharers:
+            List<Sharer>.from(json["sharers"].map((x) => Sharer.fromJson(x))),
+      );
 
-  Map<String, dynamic> toJson() => _orderToJson(this);
-  @override
-  String toString() => "Order<$title>";
+  Map<String, dynamic> toJson() => {
+        "payers": List<dynamic>.from(payers.map((x) => x.toJson())),
+        "memo": memo,
+        "title": title,
+        "isFinish": isFinish,
+        "date": date,
+        "total": total,
+        "sharers": List<dynamic>.from(sharers.map((x) => x.toJson())),
+      };
 }
 
-Order _orderFromJson(Map<String, dynamic> json) {
-  return Order(json['title'],
-      memo: json['memo'],
-      total: json['total'],
-      isFinish: json['isFinish'],
-      date: json['date'] == null ? null : (json['date'] as Timestamp).toDate(),
-      payers: _convertPayers(json['payers'] as List),
-      sharers: _convertSharers(json['sharers'] as List));
-}
-
-List<Payer> _convertPayers(List payerMap) {
-  if (payerMap == null) {
-    return null;
-  }
-  List<Payer> payers = List<Payer>();
-  payerMap.forEach((value) {
-    payers.add(Payer.fromJson(value));
+class Payer {
+  Payer({
+    this.name,
+    this.price,
   });
-  return payers;
+
+  String name;
+  int price;
+
+  factory Payer.fromJson(Map<String, dynamic> json) => Payer(
+        name: json["name"],
+        price: json["price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "price": price,
+      };
 }
 
-List<Sharer> _convertSharers(List sharerMap) {
-  if (sharerMap == null) {
-    return null;
-  }
-  List<Sharer> sharers = List<Sharer>();
-  sharerMap.forEach((value) {
-    sharers.add(Sharer.fromJson(value));
+class Sharer {
+  Sharer({
+    this.flag,
+    this.name,
+    this.price,
   });
-  return sharers;
+
+  int flag = 0;
+  String name;
+  int price;
+
+  factory Sharer.fromJson(Map<String, dynamic> json) => Sharer(
+        flag: json["flag"],
+        name: json["name"],
+        price: json["price"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "flag": flag,
+        "name": name,
+        "price": price,
+      };
 }
 
-Map<String, dynamic> _orderToJson(Order instance) => <String, dynamic>{
-      'title': instance.title,
-      'memo': instance.memo,
-      'date': instance.date,
-      'payers': _payerList(instance.payers),
-      'sharers': _sharerList(instance.sharers),
-    };
+/* 
+{"payers": [{"name": "PoYi", "price": 200}], "memo": "週六加班", "title": "麥當勞", "isFinish": "false", "date": "Timestamp(seconds=1599840000, nanoseconds=0)", "total": 374, "sharers": [{"flag": 0, "name": "PoYi", "price": 120}, {"flag": 0, "name": "Sara", "price": 80}]}
 
-List<Map<String, dynamic>> _payerList(List<Payer> payers) {
-  if (payers == null) {
-    return null;
-  }
-  List<Map<String, dynamic>> payerMap = List<Map<String, dynamic>>();
-  payers.forEach((payer) {
-    payerMap.add(payer.toJson());
-  });
-  return payerMap;
-}
-
-List<Map<String, dynamic>> _sharerList(List<Sharer> sharers) {
-  if (sharers == null) {
-    return null;
-  }
-  List<Map<String, dynamic>> sharerMap = List<Map<String, dynamic>>();
-  sharers.forEach((sharer) {
-    sharerMap.add(sharer.toJson());
-  });
-  return sharerMap;
-}
+*/
