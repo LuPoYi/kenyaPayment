@@ -8,6 +8,7 @@ import 'pages/home.dart';
 import 'pages/chat.dart';
 import 'pages/history.dart';
 import 'pages/profile.dart';
+import 'package:kenyaPayment/services/firebase.dart';
 
 class App extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   TextEditingController _titleController = new TextEditingController();
   TextEditingController _totalController = new TextEditingController();
+  TextEditingController _memoController = new TextEditingController();
   TextEditingController _kenyaController = new TextEditingController();
   TextEditingController _bobController = new TextEditingController();
   TextEditingController _shenController = new TextEditingController();
@@ -181,9 +183,26 @@ class _AppState extends State<App> {
                 ),
               ),
               Padding(
+                padding: EdgeInsets.all(2.0),
+                child: TextFormField(
+                  controller: _memoController,
+                  decoration: InputDecoration(
+                    icon: Icon(Icons.category),
+                    hintText: 'Memo',
+                    labelText: '你可能會想填一下memo',
+                  ),
+                  onSaved: (String value) {},
+                  validator: (String value) {
+                    return value.contains('@')
+                        ? 'Do not use the @ char.'
+                        : null;
+                  },
+                ),
+              ),
+              Padding(
                 padding: EdgeInsets.all(4.0),
                 child: RaisedButton(
-                  child: Text("Next1"),
+                  child: Text("Next"),
                   onPressed: () {
                     pcNextPage();
                   },
@@ -204,7 +223,7 @@ class _AppState extends State<App> {
                   controller: _kenyaController,
                   decoration: InputDecoration(
                     icon: Icon(Icons.category),
-                    labelText: '誰付的',
+                    labelText: '克彥付多少',
                   ),
                 ),
               ),
@@ -284,24 +303,20 @@ class _AppState extends State<App> {
 
     Order order = Order(
         isFinish: false,
-        memo: "",
+        memo: "這裡是memo",
         title: _titleController.text,
         total: int.parse(_totalController.text),
         payers: payers,
         sharers: sharers,
         date: selectedDate);
 
-    FirebaseFirestore.instance
-        .collection(ordersCollection)
-        .add(order.toJson())
-        .catchError((e) {
-      print(e.toString());
-    });
+    FirebaseService.createOrder(order);
 
     //  clear form
     selectedDate = DateTime.now();
     _titleController.text = "";
     _totalController.text = "";
+    _memoController.text = "";
     _kenyaController.text = "";
     _bobController.text = "";
     _shenController.text = "";

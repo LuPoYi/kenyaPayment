@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final order = orderFromJson(jsonString);
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
@@ -39,7 +36,6 @@ class Order {
         memo: json["memo"],
         title: json["title"],
         isFinish: json["isFinish"],
-        //date: json["date"],
         date:
             json['date'] == null ? null : (json['date'] as Timestamp).toDate(),
         total: json["total"],

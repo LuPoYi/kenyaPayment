@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kenyaPayment/services/firebase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common/variable.dart';
 
@@ -77,14 +78,7 @@ class _ChatPageState extends State<ChatPage> {
         "photoURL": photoURL
       };
 
-      FirebaseFirestore.instance
-          .collection("rooms")
-          .doc("yJreT4x8Fr37dP6h55qq")
-          .collection("messages")
-          .add(chatMessageMap)
-          .catchError((e) {
-        print(e.toString());
-      });
+      FirebaseService.createMessage(chatMessageMap);
 
       setState(() {
         messageEditingController.text = "";
