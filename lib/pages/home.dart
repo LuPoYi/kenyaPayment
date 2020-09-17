@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Image(
-            image: AssetImage('assets/google_logo.png'),
+            image: AssetImage('assets/cash.png'),
             fit: BoxFit.contain,
             height: 30,
           ),
