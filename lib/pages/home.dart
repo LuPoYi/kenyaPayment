@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../common/widget.dart';
-import '../common/variable.dart';
 import '../models/order.dart';
+import 'package:kenyaPayment/services/firebase.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -66,8 +66,7 @@ class _HomePageState extends State<HomePage> {
 // current status
   Widget _buildOrderList(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        stream:
-            FirebaseFirestore.instance.collection(ordersCollection).snapshots(),
+        stream: FirebaseService.getOrdersSnapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (!snapshot.hasData) return LinearProgressIndicator();

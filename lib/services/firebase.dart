@@ -1,8 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kenyaPayment/models/order.dart';
-import 'package:kenyaPayment/common/variable.dart';
+
+const roomsCollection = 'rooms';
+const ordersCollection = 'orders';
+const usersCollection = 'users';
 
 class FirebaseService {
+  //
+  static Stream<QuerySnapshot> getOrdersSnapshots() {
+    return FirebaseFirestore.instance.collection(ordersCollection).snapshots();
+  }
+
   static createOrder(Order order) {
     FirebaseFirestore.instance
         .collection(ordersCollection)

@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:kenyaPayment/common/variable.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kenyaPayment/models/order.dart';
 import 'pages/home.dart';
-import 'pages/chat.dart';
-import 'pages/history.dart';
 import 'pages/profile.dart';
+import 'pages/settings.dart';
 import 'package:kenyaPayment/services/firebase.dart';
 
 class App extends StatefulWidget {
@@ -31,9 +28,8 @@ class _AppState extends State<App> {
 
   final tabs = [
     HomePage(),
-    HistoryPage(),
-    ChatPage(),
     ProfilePage(),
+    SettingsPage(),
   ];
 
   @override
@@ -81,14 +77,11 @@ class _AppState extends State<App> {
               unselectedItemColor: Colors.grey,
               selectedItemColor: Color(0xFF5579DB),
               items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(icon: Icon(Icons.money), label: 'home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.home), title: Text('')),
+                    icon: Icon(Icons.people), label: 'profile'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.list), title: Text('')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.people), title: Text('')),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.person), title: Text('Profile')),
+                    icon: Icon(Icons.settings), label: 'settings'),
               ],
               onTap: onTabTapped,
             )));
@@ -156,7 +149,7 @@ class _AppState extends State<App> {
                     labelText: '總金額',
                   ),
                   keyboardType: TextInputType.number,
-                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
               ),
               Padding(
