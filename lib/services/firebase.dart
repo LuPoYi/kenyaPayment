@@ -3,7 +3,7 @@ import 'package:kenyaPayment/models/order.dart';
 
 const roomsCollection = 'rooms';
 const ordersCollection = 'orders';
-const usersCollection = 'users';
+const membersCollection = 'members';
 
 class FirebaseService {
   //
@@ -29,6 +29,10 @@ class FirebaseService {
         .catchError((e) {
       print(e.toString());
     });
+  }
+
+  static Stream<QuerySnapshot> getMembersSnapshots() {
+    return FirebaseFirestore.instance.collection(membersCollection).snapshots();
   }
 }
 // class DatabaseMethods{

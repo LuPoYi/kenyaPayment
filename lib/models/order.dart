@@ -6,15 +6,16 @@ Order orderFromJson(String str) => Order.fromJson(json.decode(str));
 String orderToJson(Order data) => json.encode(data.toJson());
 
 class Order {
-  Order(
-      {this.payers,
-      this.memo,
-      this.title,
-      this.isFinish,
-      this.date,
-      this.total,
-      this.sharers,
-      this.reference});
+  Order({
+    this.payers,
+    this.memo,
+    this.title,
+    this.isFinish,
+    this.date,
+    this.total,
+    this.sharers,
+    this.reference,
+  });
 
   List<Payer> payers;
   String memo;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kenyaPayment/services/firebase.dart';
+import '../models/member.dart';
+import '../common/widget.dart';
 import 'login.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -35,10 +37,27 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    Widget memeberWidgetList = StreamBuilder<QuerySnapshot>(
+        stream: FirebaseService.getMembersSnapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (!snapshot.hasData) return LinearProgressIndicator();
+            print("snapshot.data.docs $snapshot.data.docs");
+
+            return Column(
+                children: snapshot.data.docs.map((data) {
+              return buildUserCard(context, Member.fromSnapshot(data));
+            }).toList());
+          } else {
+            return Container();
+          }
+        });
+
     return Column(
       children: [
         Text("email: $email"),
         Text("name: $name"),
+        memeberWidgetList,
         FlatButton(
           onPressed: () {
             _signOutGoogle();

@@ -70,16 +70,19 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (!snapshot.hasData) return LinearProgressIndicator();
-            //print("aaa: ${snapshot.data.docs}");
+
             List<Widget> orders = snapshot.data.docs.map((data) {
-              return buildOrderCard(context, Order.fromSnapshot(data));
+              return buildOrderCard2(context, Order.fromSnapshot(data));
             }).toList();
-            return Expanded(
+
+            return SizedBox(
+                height: 200,
                 child: ListView(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              children: orders,
-            ));
+                  padding: EdgeInsets.only(left: 12),
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: orders,
+                ));
           } else {
             return Container();
           }
